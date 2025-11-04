@@ -100,6 +100,47 @@
       </section>
     </main>
     <script>
+      // grab the display
+      const display = document.querySelector('output');
+
+      // grab number
+      const num = document.querySelectorAll('[data-value]');
+
+      num.forEach(element => {
+        element.addEventListener("click", (event) => {
+          event.stopPropagation();
+          
+          // get the number or char from the button
+          const value = element.getAttribute('data-value');
+
+          // if display 0 replace
+          if (display.textContent === '0') {
+            display.textContent = value;
+          } else {
+            display.textContent += value;
+          }
+        });
+      });
+
+      // select operator 
+      const operator = document.querySelectorAll('[data-action="operator"]');
+
+      operator.forEach(button => {
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
+          console.log("Operator clicked", button.textContent);
+        });
+      });
+
+      // sum function
+      function sum (x, y) {
+        return x + y;
+      }
+
+      // if (button.textContent === '+' ) {
+
+      // }
+
     </script>
   </body>
 </html>
