@@ -100,20 +100,24 @@
       </section>
     </main>
     <script>
+      // calc values
+      let firstValue = null;
+      let secondValue = null;
+      let operatorValue = null;
+
       // grab the display
       const display = document.querySelector('output');
 
       // grab number
-      const num = document.querySelectorAll('[data-value]');
+      const num = document.querySelectorAll('button:not([data-action])');
 
       num.forEach(element => {
         element.addEventListener("click", (event) => {
-          event.stopPropagation();
           
           // get the number or char from the button
           const value = element.getAttribute('data-value');
 
-          // if display 0 replace
+          // check for new number entry after operator
           if (display.textContent === '0') {
             display.textContent = value;
           } else {
@@ -126,20 +130,42 @@
       const operator = document.querySelectorAll('[data-action="operator"]');
 
       operator.forEach(button => {
-        button.addEventListener("click", (e) => {
-          e.stopPropagation();
-          console.log("Operator clicked", button.textContent);
+        button.addEventListener("click", () => {
+          // only store firstValue if it hasnt yet
+          firstValue = Number(display.textContent);
+          operatorValue = button.getAttribute("data-value");
+          display.textContent = "0";
         });
       });
 
-      // sum function
-      function sum (x, y) {
-        return x + y;
-      }
+      // clear button
+      const clearButton = document.querySelector('[data-action="clear"]');
 
-      // if (button.textContent === '+' ) {
+      clearButton.addEventListener('click', () => {
+        display.textContent= '0';
+        firstValue = null;
+        operatorValue = null;
+      });
 
-      // }
+      // equals button
+      const equalsButton = document.getElementById('equals');
+
+      equalsButton.addEventListener('click', () => {
+        if (firstValue === null || operatorValue === null) return;
+
+        secondValue = Number(display.textContent);
+
+        console.log({firstValue, operatorValue, secondValue});
+        let result;
+        if (operatorValue === '+') result = firstValue + secondValue;
+        else if (operatorValue === '-') result = firstValue - secondValue;
+        else if (operatorValue === '*') result = firstValue * secondValue;
+        else if (operatorValue === '/') result = secondValue === 0 ? 'Error division by zero' : firstValue / secondValue;
+        
+        display.textContent = result;
+        firstValue = null;
+        operatorValue = null;
+      });
 
     </script>
   </body>
